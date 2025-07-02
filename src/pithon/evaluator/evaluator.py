@@ -532,3 +532,22 @@ def cast_to_type(value: EnvValue, target_type: Type[T]) -> T:
         return value
     else:
         raise TypeError(f"Conversion impossible de {type(value).__name__} vers {target_type.__name__}")
+
+def is_instance_of(value: EnvValue, type_name: str) -> bool:
+    """Vérifie si `value` est une instance d'un type Pithon par son nom.
+    Supporte les types prédéfinis (PiNumber, PiString, etc.) et les types personnalisés.
+    Retourne True si c'est le cas, False sinon.
+    """
+    type_map = {
+        'PiNumber': PiNumber,
+        'PiString': PiString,
+        'PiBool': PiBool,
+        'PiNone': PiNone,
+        'PiList': PiList,
+        'PiTuple': PiTuple,
+        'PiVariable': PiVariable,
+        'PiFunctionDef': PiFunctionDef,
+        'PiFunctionCall': PiFunctionCall,
+        'PiSubscript': PiSubscript
+    }
+    return isinstance(value, type_map.get(type_name, EnvValue))
